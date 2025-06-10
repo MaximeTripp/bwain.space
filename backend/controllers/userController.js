@@ -1,9 +1,9 @@
 import { getUser, createUser } from "../models/userModel.js"
 
+// Maybe make these try-catches better in the future if needed!
+
 export async function loginUser(req, res){
-    
-    // TO-DO
-    // Refactor so that the try catch is handled in the controller, not the model!
+
     try {
 
         const username = req.body.username;
@@ -15,15 +15,13 @@ export async function loginUser(req, res){
 
     } catch (error){
         
-        console.log();
+        console.log("Error!");
 
     }
 }
 
 export async function addUser(req, res) {
     
-    // TO-DO
-    // Refactor so that the try catch is handled in the controller, not the model!
     try {
 
         const username = req.body.username;
@@ -37,9 +35,9 @@ export async function addUser(req, res) {
 
         res.send(user);
 
-    } catch {
-
-        //TO-DO
+    } catch (error){
+        
+        console.log("Error!");
 
     }
 
@@ -48,8 +46,7 @@ export async function addUser(req, res) {
 }
 
 export async function removeUser(req, res){
-    // TO-DO
-    // Refactor so that the try catch is handled in the controller, not the model!
+
     try {
 
         const username = req.body.username;
@@ -59,9 +56,9 @@ export async function removeUser(req, res){
 
         res.send(user);
 
-    } catch {
+    } catch (error) {
 
-        //TO-DO
+        console.log("Error!");
 
     }
 

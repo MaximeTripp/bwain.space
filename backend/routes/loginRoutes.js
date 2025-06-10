@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 router.get('/', (req, res) => {
 
-    res.sendFile(path.join(__dirname, '../../frontend/views/login.html'));
+    res.sendFile(path.join(__dirname, '../../backup/frontend/views/login.html'));
 
 });
 
