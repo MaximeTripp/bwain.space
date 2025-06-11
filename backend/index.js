@@ -1,10 +1,12 @@
 import express from 'express'
+import cors from 'cors';
 import indexRouter from './routes/indexRoutes.js';
 import loginRouter from './routes/loginRoutes.js';
 
 
 const app = express();
 
+app.use(cors())
 app.use(express.json()); //For JSON in req
 //app.use(express.urlencoded({ extended: true })); For HTML forms in req
 
