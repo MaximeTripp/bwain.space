@@ -1,25 +1,16 @@
 import React from 'react'
+import useForm from '../hooks/useForm'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
 const LoginPage = () => {
     
-    const [inputs, setInputs] = useState({});
+    const onLogin = (data) => {
+        alert(JSON.stringify(data))
+    } 
 
-    const handleChange = (event) => {
+    const {inputs, handleChange, handleSubmit} = useForm({}, onLogin);
 
-        const name = event.target.name;
-        const value = event.target.value;
-
-        setInputs((values) => ({...values,[name]:value})) ;
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Send inputs a post request to localHost:5000/login
-        alert(JSON.stringify(inputs))
-    }
-  
     return (
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <Link to="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
