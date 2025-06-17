@@ -9,7 +9,7 @@ const LoginPage = () => {
         alert(JSON.stringify(data))
     } 
 
-    const {inputs, handleChange, handleSubmit} = useForm({}, onLogin);
+    const {inputs, handleChange, handleSubmit} = useForm({username:'',password:''}, onLogin);
 
     return (
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
