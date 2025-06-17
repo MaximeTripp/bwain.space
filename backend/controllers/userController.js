@@ -8,8 +8,11 @@ export async function loginUser(req, res){
 
         const username = req.body.username;
         const password = req.body.password;
-
         const user = await getUser(username, password);
+
+        if(user.length === 0){
+            res.status(404).send('Not Found');
+        }
 
         res.send(user);
 

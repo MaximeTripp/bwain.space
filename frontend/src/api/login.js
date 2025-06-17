@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function onLogin(credentials) {
-    alert(API_URL)
     const response = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: {
@@ -14,7 +13,8 @@ export async function onLogin(credentials) {
     throw new Error('Login failed');
   }
 
-  return response.json();
+  console.log(response.json())
+  return response;
 };
 
 
