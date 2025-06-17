@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const useForm = (initialValues= {}, onSubmit) => {
     
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs] = useState(initialValues);
 
     const handleChange = (event) => {
 

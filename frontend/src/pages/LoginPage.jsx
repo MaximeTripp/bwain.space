@@ -1,13 +1,9 @@
 import React from 'react'
 import useForm from '../hooks/useForm'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { onLogin } from '../api/login'
 
 const LoginPage = () => {
-    
-    const onLogin = (data) => {
-        alert(JSON.stringify(data))
-    } 
 
     const {inputs, handleChange, handleSubmit} = useForm({username:'',password:''}, onLogin);
 
