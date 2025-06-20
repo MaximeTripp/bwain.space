@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 const useForm = (initialValues= {}, onSubmit) => {
-    
+
+    const [error, SetError] = useState(null);
     const [inputs, setInputs] = useState(initialValues);
 
     const handleChange = (event) => {
@@ -12,13 +13,20 @@ const useForm = (initialValues= {}, onSubmit) => {
         setInputs((values) => ({...values,[name]:value})) ;
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        onSubmit(inputs)
+        try {
+          await onSubmit(inputs)
+          SetError(null);
+        } catch(err){
+          SetError(err.message);
+        }
+       
     }
 
     return {
         inputs,
+        error,
         handleChange,
         handleSubmit,
         setInputs,
