@@ -17,7 +17,7 @@ export async function loginUser(credentials) {
 };
 
 export async function refreshToken() {
-  const res = await fetch(`${API_URL}/refresh`, {
+  const res = await fetch(`${API_URL}/login/refresh`, {
     method: 'POST',
     credentials: 'include',
   });
@@ -27,7 +27,7 @@ export async function refreshToken() {
 }
 
 export async function logoutUser() {
-  await fetch(`${API_URL}/logout`, {
+  await fetch(`${API_URL}/login/logout`, {
     method: 'POST',
     credentials: 'include',
   });

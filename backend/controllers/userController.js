@@ -1,51 +1,49 @@
-import { getUser, createUser } from "../models/userModel.js"
+import { getUser, createUser, deleteUser } from "../models/userModel.js"
+import bcrypt from 'bcrypt';
 
-// Maybe make these try-catches better in the future if needed!
+const SALT_ROUNDS = 10;
 
-export async function loginUser(req, res){
 
+export async function loginUser(req, res) {
     try {
+        const { username, password } = req.body;
 
-        const username = req.body.username;
-        const password = req.body.password;
-        const user = await getUser(username, password);
+        const user = await getUser(username); 
 
-        if(user.length === 0){
-            res.status(404).send('Not Found');
+        if (!user || user.length === 0) {
+            return res.status(404).send('User not found');
         }
 
-        res.send(user);
+        const isMatch = await bcrypt.compare(password, user[0].password); 
 
-    } catch (error){
-        
-        console.log("Error!");
+        if (!isMatch) {
+            return res.status(401).send('Invalid credentials');
+        }
 
+        res.send(user[0]); 
+    } catch (error) {
+        console.error("Login Error:", error);
+        res.status(500).send('Internal Server Error');
     }
 }
 
 export async function addUser(req, res) {
-    
     try {
+        const { username, password } = req.body;
 
-        const username = req.body.username;
-        const password = req.body.password;
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-        const user = await createUser(username, password);
+        const user = await createUser(username, hashedPassword); 
 
-        if(user === 1062){
-            console.log("USER ALREADY EXISTS!!!");
+        if (user === 1062) { 
+            return res.status(409).send("User already exists");
         }
 
         res.send(user);
-
-    } catch (error){
-        
-        console.log("Error!");
-
+    } catch (error) {
+        console.error("Register Error:", error);
+        res.status(500).send('Internal Server Error');
     }
-
-
-
 }
 
 export async function removeUser(req, res){
@@ -61,7 +59,7 @@ export async function removeUser(req, res){
 
     } catch (error) {
 
-        console.log("Error!");
+        console.log(error);
 
     }
 

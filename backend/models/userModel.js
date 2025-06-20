@@ -5,8 +5,8 @@ async function createUser(username, password){
   return results;
 }
 
-async function getUser(username, password){
-  const [results] = await connection.execute(`SELECT * FROM users WHERE BINARY username = ? AND BINARY password = ?;`,[username, password]);
+async function getUser(username){
+  const [results] = await connection.execute(`SELECT * FROM users WHERE BINARY username = ?;`,[username]);
   return results;
 }
 
