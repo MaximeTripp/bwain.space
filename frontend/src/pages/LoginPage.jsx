@@ -30,7 +30,7 @@ const LoginPage = () => {
                 for="username"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Your email
+                Username
               </label>
               <input
                 value={inputs.username || ""}
