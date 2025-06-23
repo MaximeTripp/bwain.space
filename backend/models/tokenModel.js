@@ -1,7 +1,7 @@
 import connection from "./database.js";
 
 async function createToken(userId, token){
-  const [results] = await connection.execute(`INSERT INTO user_tokens(userid, password) values(?,?);`,[userId, token]);
+  const [results] = await connection.execute(`INSERT INTO user_tokens(userid, refresh_token) values(?,?);`,[userId, token]);
   return results;
 }
 

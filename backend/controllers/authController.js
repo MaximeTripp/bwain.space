@@ -1,4 +1,5 @@
 import { getUser, createUser, deleteUser} from "../models/userModel.js";
+import {createToken,replaceToken,getToken} from "../models/tokenModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -20,8 +21,20 @@ export async function loginUser(req, res) {
       return res.status(401).send("Invalid credentials");
     }
 
-    const accessToken = jwt.sign({"username": user.username}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
-    const refreshToken = jwt.sign({"username": user.username}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '5m'});
+
+    const accessToken = jwt.sign({"username": user[0].username}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
+    const refreshToken = jwt.sign({"username": user[0].username}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '5m'});
+
+
+    const existingToken = await getToken(user[0].userid);
+
+    if(!existingToken || existingToken.length === 0){
+        console.log(`creating new token ${refreshToken}`)
+        await createToken(user[0].userid,refreshToken);
+    } else {
+        console.log(`Replacing ${existingToken[0].refresh_token} with ${refreshToken}`)
+        await replaceToken(user[0].userid,refreshToken);
+    }
 
     res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 60*1000*5});
     res.json({accessToken});
