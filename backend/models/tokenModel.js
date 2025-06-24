@@ -10,9 +10,21 @@ async function replaceToken(userId, token){
   return results;
 }
 
-async function getToken(userId){
+async function getTokenByUserId(userId){
   const [results] = await connection.execute(`SELECT * FROM user_tokens WHERE userid = ?;`,[userId]);
   return results;
 }
 
-export {createToken,replaceToken,getToken};
+async function getTokenByTokenId(token){
+  const [results] = await connection.execute(`SELECT * FROM user_tokens WHERE refresh_token = ?;`,[token]);
+  return results;
+}
+
+async function removeToken(token){
+  const [results] = await connection.execute(`DELETE FROM user_tokens WHERE refresh_token = ?;`, [token]);
+  return results;
+}
+
+
+
+export {createToken,replaceToken,getTokenByTokenId,getTokenByUserId, removeToken};

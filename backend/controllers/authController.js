@@ -1,5 +1,5 @@
 import { getUser, createUser, deleteUser} from "../models/userModel.js";
-import {createToken,replaceToken,getToken} from "../models/tokenModel.js";
+import {createToken,replaceToken,getTokenByUserId, removeToken} from "../models/tokenModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -22,11 +22,11 @@ export async function loginUser(req, res) {
     }
 
 
-    const accessToken = jwt.sign({"username": user[0].username}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
-    const refreshToken = jwt.sign({"username": user[0].username}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '5m'});
+    const accessToken = jwt.sign({"userid": user[0].userid}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
+    const refreshToken = jwt.sign({"userid": user[0].userid}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '5m'});
 
 
-    const existingToken = await getToken(user[0].userid);
+    const existingToken = await getTokenByUserId(user[0].userid);
 
     if(!existingToken || existingToken.length === 0){
         console.log(`creating new token ${refreshToken}`)
@@ -62,6 +62,32 @@ export async function addUser(req, res) {
     res.status(500).send("Internal Server Error");
   }
 }
+
+export async function logoutUser(req, res) {
+  try {
+    const cookies = req.cookies;
+    if (!cookies?.jwt) {
+      return res.sendStatus(204);
+    }
+    console.log(cookies.jwt);
+    const refreshToken = cookies.jwt;
+    const foundUser = await getTokenByTokenId(refreshToken);
+    if (!foundUser || foundUser.length === 0) {
+      res.clearCookie('jwt', {httpOnly:true});
+      return res.sendStatus(204);
+    }
+    const deleted = await removeToken(refreshToken);
+    res.clearCookie('jwt', {httpOnly:true});
+    if(!deleted){
+      return res.sendStatus(500);
+    }
+    res.sendStatus(204);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+
 
 export async function removeUser(req, res) {
   try {
