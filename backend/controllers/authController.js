@@ -1,5 +1,5 @@
 import { getUser, createUser, deleteUser} from "../models/userModel.js";
-import {createToken,replaceToken,getTokenByUserId, removeToken} from "../models/tokenModel.js";
+import {createToken,replaceToken,getTokenByUserId, removeToken, getTokenByTokenId} from "../models/tokenModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -81,8 +81,9 @@ export async function logoutUser(req, res) {
     if(!deleted){
       return res.sendStatus(500);
     }
-    res.sendStatus(204);
+    res.sendStatus(200);
   } catch (error) {
+    console.log(error)
     res.status(500).send("Internal Server Error");
   }
 }

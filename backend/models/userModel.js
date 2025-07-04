@@ -20,4 +20,4 @@ async function deleteUser(username, password){
   return results;
 }
 
-export {createUser, getUser, deleteUser};
+export {createUser, getUser, deleteUser, getUsers};

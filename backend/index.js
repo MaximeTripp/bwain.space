@@ -4,6 +4,8 @@ import indexRouter from './routes/indexRoutes.js';
 import authRouter from './routes/authRoutes.js';
 import refreshRouter from './routes/refreshRoutes.js';
 import cookieParser from 'cookie-parser';
+import verifyJWT from './middleware/verifyJWT.js';
+import testRouter from './routes/testRoutes.js';
 
 const app = express();
 
@@ -15,6 +17,10 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/refresh',refreshRouter);
+
+app.use(verifyJWT);
+app.use('/testAuth', testRouter)
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {console.log(`Listening on Port #${PORT}`)});
